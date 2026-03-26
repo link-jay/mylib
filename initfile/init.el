@@ -34,6 +34,7 @@
 ;; 全局快捷键
 (global-set-key (kbd "C-h") (kbd "DEL"))
 (global-set-key (kbd "C-S-h") 'help)
+(global-set-key (kbd "C-z") 'universal-argument)
 (global-set-key (kbd "C-u") (kbd "M-0 C-k"))
 (global-set-key (kbd "C-w") (kbd "M-DEL"))
 (global-set-key (kbd "C-c x") 'kill-region)
@@ -66,4 +67,6 @@
 
 ;; gdb模式增强
 (setq gdb-many-windows t)
-(put 'downcase-region 'disabled nil)
+
+;; 追踪链接
+(setq find-file-visit-truename t)
