@@ -31,6 +31,15 @@
 ;; 翻页
 ;;(setq next-screen-context-lines 13)
 
+;; 补全
+(electric-pair-mode 1)
+
+;; gdb模式增强
+(setq gdb-many-windows t)
+
+;; 追踪链接
+(setq find-file-visit-truename t)
+
 ;; 全局快捷键
 (global-set-key (kbd "C-h") (kbd "DEL"))
 (global-set-key (kbd "C-S-h") 'help)
@@ -48,11 +57,8 @@
 (global-set-key (kbd "M-n") (lambda () (interactive) (next-line) (transpose-lines 1) (backward-char)))
 (global-set-key (kbd "M-p") (lambda () (interactive) (next-line) (transpose-lines -1) (backward-char)))
 
-(global-set-key (kbd "C->") 'mc/mark-next-like-this-word)                  ;;插件
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this-word)              ;;插件
-
 ;; 模式快捷键
-(dolist (hook '(c-mode-hook python-mode-hook lua-mode-hook mhtml-mode-hook))
+(dolist (hook '(c-mode-hook lua-mode-hook mhtml-mode-hook))
   (add-hook hook
 	    (lambda ()
 	      (local-set-key (kbd "C-o") (kbd "C-a RET C-p TAB"))
@@ -62,11 +68,14 @@
 	  (lambda ()
 	    (local-set-key (kbd "M-i") 'facemenu-keymap)))
 
-;; 补全
-(electric-pair-mode 1)
+(add-hook 'markdown-mode-hook
+	  (lambda ()
+	    (local-set-key (kbd "M-n")
+			   (lambda () (interactive) (next-line) (transpose-lines 1) (backward-char)))
+	    (local-set-key (kbd "M-p")
+			   (lambda () (interactive) (next-line) (transpose-lines -1) (backward-char)))))
 
-;; gdb模式增强
-(setq gdb-many-windows t)
+;; multiple-cursors
+(global-set-key (kbd "C->") 'mc/mark-next-like-this-word)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this-word)
 
-;; 追踪链接
-(setq find-file-visit-truename t)
