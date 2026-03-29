@@ -10,7 +10,8 @@
      default))
  '(display-line-numbers-type 'visual)
  '(package-selected-packages
-   '(gruber-darker-theme lua-mode magit markdown-mode multiple-cursors))
+   '(gruber-darker-theme lua-mode magit markdown-mode multiple-cursors
+			 yasnippet))
  '(warning-suppress-log-types '((use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

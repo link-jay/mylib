@@ -79,3 +79,5 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this-word)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this-word)
 
+;; yasnippet
+(yas-global-mode 1)
