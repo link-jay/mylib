@@ -49,6 +49,7 @@
 (global-set-key (kbd "C-c x") 'kill-region)
 (global-set-key (kbd "C-c c") 'kill-ring-save)
 (global-set-key (kbd "<f5>") (kbd "M-x compile"))
+(global-set-key (kbd "M-g i") (kbd "M-x imenu RET"))
 (global-set-key (kbd "C-x b") 'mode-line-other-buffer)
 (global-set-key (kbd "C-x C-b") 'buffer-menu-other-window)
 (global-set-key (kbd "C-x k") (lambda () (interactive) (kill-buffer (current-buffer))))

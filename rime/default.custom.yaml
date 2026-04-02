@@ -1,0 +1,13 @@
+patch:
+  key_binder/bindings:
+    - {when: composing, accept: Control+h, send: BackSpace}
+    - {when: composing, accept: Control+b, send: Left}
+    - {when: composing, accept: Control+f, send: Right}
+    - {when: composing, accept: Control+d, send: Delete}
+    - {when: composing, accept: Control+e, send: End}
+    - {when: composing, accept: Control+a, send: Home}
+    - {when: composing, accept: Alt+b,     send: Left}
+    - {when: composing, accept: Alt+f,     send: Right}
+    - {when: has_menu,  accept: Control+g, send: Escape}
+    - {when: has_menu,  accept: Control+n, send: Page_Down}
+    - {when: has_menu,  accept: Control+p, send: Page_Up}
