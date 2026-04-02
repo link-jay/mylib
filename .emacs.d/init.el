@@ -2,6 +2,18 @@
 (setq custom-file "~/.emacs.d/autoinit.el")
 (load-file "~/.emacs.d/autoinit.el")
 
+;; 自动安装扩展
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
+(package-initialize)
+
+(unless package-archive-contents
+  (package-refresh-contents))
+
+;; 自动安装 autoinit.el 里记录的包
+(package-install-selected-packages t)
+
 ;; 关闭保存的一些设置
 (setq make-backup-files nil
       auto-save-default nil
