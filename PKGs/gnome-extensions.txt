@@ -1,0 +1,9 @@
+kimpanel@kde.org
+trayIconsReloaded@selfmade.pl
+static-workspace-background@CleoMenezesJr.github.io
+nightthemeswitcher@romainvigier.fr
+tiling-assistant@leleat-on-github
+blur-my-shell@aunetx
+live-lockscreen@nick-redwill
+system-monitor-next@paradoxxx.zero.gmail.com
+just-perfection-desktop@just-perfection
