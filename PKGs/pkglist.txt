@@ -1,61 +1,69 @@
-aria2
-base
-base-devel
-bc
-binwalk
-blackarch-keyring
-clash-verge-rev-bin
-docker
-docker-compose
-earlyoom
-efibootmgr
-emacs-wayland
-exfat-utils
-fastfetch
-fcitx5
-fcitx5-configtool
-fcitx5-rime
-ffmpegthumbnailer
-firefox
-gameconqueror
-gdb
-gdm
-git
-google-chrome
-grub
-grub-btrfs
-inotify-tools
-kitty
-kmonad
-linux
-linux-firmware
-man-pages
-man-pages-zh_cn
-marktext-bin
-microsoft-edge-stable-bin
-mpv
-networkmanager
-nmap
-nnn
-ntfs-3g
-obs-studio
-plymouth
-progress
-rsync
-scanmem
-snapper
-snapshot
-steam
-strace
-sudo
-terminus-font
-ttf-fira-code
-umu-launcher
-videoduplicatefinder-git
-vim
-vnstat
-wine-staging
-winegame
-wireshark-qt
-yay-bin
-yt-dlp
+alsa-firmware 1.2.4-4
+alsa-utils 1.2.15.2-2
+aria2 1.37.0-2
+base 3-3
+base-devel 1-2
+bc 1.08.2-1
+binwalk 3.1.0-1
+blackarch-keyring 20251011-2
+blackarch-mirrorlist 20260403-1
+btrfs-progs 6.19.1-1
+clash-verge-rev-bin 2.4.7-1
+docker 1:29.4.0-1
+docker-compose 5.1.3-1
+earlyoom 1.9.0-1
+efibootmgr 18-3
+emacs-wayland 30.2-2
+exfat-utils 1.4.0-4
+fastfetch 2.61.0-1
+fcitx5 5.1.19-1
+fcitx5-configtool 5.1.13-1
+fcitx5-rime 5.1.13-1
+ffmpegthumbnailer 2.3.0-1
+firefox 149.0.2-1
+fuse2 2.9.9-5
+gameconqueror 0.17-11
+gdb 17.1-3
+gdm 50.0-2
+git 2.53.0-1
+google-chrome 147.0.7727.101-1
+graphviz 14.1.4-2
+grub 2:2.14-1
+grub-btrfs 4.14-1
+htop 3.5.0-1
+inotify-tools 4.25.9.0-1
+kitty 0.46.2-1
+kmonad 0.4.4-105
+linux 6.19.11.arch1-1
+linux-firmware 20260309-1
+man-db 2.13.1-1
+man-pages 6.17-1
+man-pages-zh_cn 1.6.4.3-1
+marktext-bin 0.17.1-2
+microsoft-edge-stable-bin 147.0.3912.60-1
+mpv 1:0.41.0-3
+networkmanager 1.56.0-1
+nmap 7.99-2
+nnn 5.2-1
+ntfs-3g 2022.10.3-2
+obs-studio 32.1.1-2
+os-prober 1.84-1
+plymouth 24.004.60-14
+progress 0.17-2
+rsync 3.4.1-2
+scanmem 0.17-11
+snapper 0.13.0-3
+sof-firmware 2025.12.2-1
+steam 1.0.0.85-6
+strace 6.19-1
+sudo 1.9.17.p2-2
+terminus-font 4.49.1-8
+ttf-fira-code 6.2-3
+umu-launcher 1.3.0-2
+videoduplicatefinder-git 3.0.x.r439.g531929e-1
+vim 9.2.0357-1
+vnstat 2.13-2
+wine-staging 11.6-1
+winegame 0.5.12.6-1
+yay-bin 12.5.7-1
+yt-dlp 2026.03.17-1

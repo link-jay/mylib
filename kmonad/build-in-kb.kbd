@@ -1,0 +1,10 @@
+(defcfg
+    input (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
+    output (uinput-sink "KMonad_buildin_keyboard")
+  fallthrough true)
+
+(defsrc esc caps)
+
+(deflayer default
+    caps esc
+)
