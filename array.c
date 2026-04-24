@@ -20,3 +20,13 @@
     }							        \
     var = (arr)[--(len)];				        \
   } while(0)
+
+#define ARRAY_POP(arr, len, cap, var)				\
+  do {							        \
+    if ((cap) == 0) {						\
+      break;							\
+    } else if ((len) <= (cap) / 4) {				\
+      arr = realloc((arr), sizeof(*arr) * ((cap) /= 2));	\
+    }							        \
+    len -= 1;							\
+  } while(0)
