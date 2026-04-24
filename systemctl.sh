@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+systemctl enable NetworkManager
+systemctl enable gdm
 systemctl enable --now snapper-timeline.timer
 systemctl enable --now snapper-cleanup.timer
 systemctl enable --now kmonad
