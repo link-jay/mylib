@@ -1,3 +1,4 @@
+/* sunday搜索算法：用于快速搜索字符串 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,7 +15,7 @@ int sundaySearch(char* main_str, char* sub_str) {
   for (int relative_pos = 0; relative_pos < sub_len; relative_pos++) {
     char key[]   = {sub_str[relative_pos], '\0'};
     int offset = sub_len - relative_pos;
-    put_ht(&shift_table, key, offset);
+    ht_put(&shift_table, key, offset);
   }
   
   while (current_pos <= max_pos) {
@@ -32,7 +33,7 @@ int sundaySearch(char* main_str, char* sub_str) {
     
     char next_char[] = {main_str[current_pos + sub_len], '\0'};
     int k;
-    if ((k = get_ht(shift_table, next_char)) != -1) {
+    if ((k = ht_get(shift_table, next_char)) != -1) {
       current_pos += k;
     } else {
       current_pos += sub_len;

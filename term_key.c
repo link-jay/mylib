@@ -1,3 +1,4 @@
+/* 接管控制终端输入，term_init处理，term_restore恢复，term_getkey来捕获输入 */
 #include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
