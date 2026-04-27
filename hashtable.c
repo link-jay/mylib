@@ -1,33 +1,41 @@
+/*
+  哈希表的c库，常用函数:
+  HashTable* create_ht(size_t),  --注意create_ht需要提供一个初始大小
+  void       ht_put(HashTable**, char*, int),  --注意传的是双指针
+  int        ht_get(HashTable*, char*),
+  void       del_ht(HashTable*)
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
 #define NotFound -1
 
-typedef struct Node {
-  char*  key;
-  int    value;
-  struct Node* next;
+typedef struct _HTNode {
+  char* key;
+  int value;
+  struct _HTNode* next;
 } Node;
 
-typedef struct HashTable {
-  Node**       buckets;
+typedef struct {
+  Node** buckets;
   unsigned int size;
   unsigned int load_size;
 } HashTable;
 
-unsigned int hash(const char* key, unsigned int size);
-Node* create_node(char* key, int value);
-HashTable* create_ht(unsigned int size);
+static unsigned int hash(const char* key, unsigned int size);
+static Node* create_node(const char* key, int value);
+HashTable* create_ht(size_t);
 static void _unify_node(Node* current_node, HashTable* ht);
-static void _append_ht(HashTable* ht, Node* node);
+static void _restore_ht(HashTable* ht, Node* node);
 void resize_ht(HashTable** ht, unsigned int value);
 void put_ht(HashTable** ht, char* key, int value);
 int get_ht(HashTable* ht, char* key);
 void del_node(Node* nd);
 void del_ht(HashTable* ht);
 
-unsigned int hash(const char* key, unsigned int size) {
+static unsigned int hash(const char* key, unsigned int size) {
   unsigned int h = 5381;
   while (*key) {
     h = ((h << 5) + h) + *key;
@@ -36,31 +44,32 @@ unsigned int hash(const char* key, unsigned int size) {
   return h % size;
 }
 
-Node* create_node(char* key, int value) {
-  Node* new_node  = (Node *)(malloc(sizeof(Node)));
-  new_node->key   = strdup(key);
+static Node* create_node(const char* key, int value) {
+  Node* new_node = (Node *)(malloc(sizeof(Node)));
+  new_node->key  = strdup(key);
   new_node->value = value;
-  new_node->next  = NULL;
+  new_node->next = NULL;
   return new_node;
 }
 
-HashTable* create_ht(unsigned int size) {
+HashTable* create_ht(size_t size) {
   HashTable* new_ht = (HashTable *)(malloc(sizeof(HashTable)));
-  new_ht->size      = size;
-  new_ht->buckets   = (Node **)(calloc(size, sizeof(Node*)));
+  new_ht->size = size;
+  new_ht->buckets = (Node **)(calloc(size, sizeof(Node*)));
   new_ht->load_size = 0;
   return new_ht;
 }
 
-static void _append_ht(HashTable* ht, Node* node) {
+/* NOTE:用于复原resize后的哈希表 */
+static void _restore_ht(HashTable* new_ht, Node* node) {
   Node* current_node = node;
   while (current_node) {
-    Node* next_node    = current_node->next;
+    Node* next_node = current_node->next;
     
-    unsigned int idx   = hash(current_node->key, ht->size);
-    current_node->next = ht->buckets[idx];
-    ht->buckets[idx]   = current_node;
-    ht->load_size++;
+    unsigned int idx = hash(current_node->key, new_ht->size);
+    current_node->next = new_ht->buckets[idx];
+    new_ht->buckets[idx] = current_node;
+    new_ht->load_size++;
 
     current_node = next_node;
   }
@@ -70,9 +79,9 @@ void resize_ht(HashTable** ht, unsigned int size) {
   HashTable* new_ht = create_ht(size);
   HashTable* old_ht = *ht;
   
-  for (int old_idx = 0; old_idx < old_ht->size; old_idx++) {
+  for (unsigned int old_idx = 0; old_idx < old_ht->size; old_idx++) {
     if (!old_ht->buckets[old_idx]) {continue;}
-    _append_ht(new_ht, old_ht->buckets[old_idx]);
+    _restore_ht(new_ht, old_ht->buckets[old_idx]);
   }
 
   *ht = new_ht;
@@ -80,26 +89,27 @@ void resize_ht(HashTable** ht, unsigned int size) {
   free(old_ht);
 }
 
+/* NOTE: 用于去除put时重复的键值对，以键判定重复 */
 static void _unify_node(Node* start_node, HashTable* ht) {
   Node* current_node = start_node;
-  Node* next_node    = current_node->next;
+  Node* next_node = current_node->next;
 
   while (next_node) {
-    if (!strcmp(start_node->key, next_node->key)) {
+    if (strcmp(start_node->key, next_node->key) == 0) {
       current_node->next = next_node->next;
       del_node(next_node);
       ht->load_size--;
       break;
     }
     current_node = next_node;
-    next_node    = next_node->next;
+    next_node = next_node->next;
   }
 }
 
-void put_ht(HashTable** ht, char* key, int value) {
-  Node* new_node   = create_node(key, value);
+void ht_put(HashTable** ht, const char* key, int value) {
+  Node* new_node = create_node(key, value);
   unsigned int idx = hash(key, (*ht)->size);
-  new_node->next   = (*ht)->buckets[idx];
+  new_node->next = (*ht)->buckets[idx];
   (*ht)->buckets[idx] = new_node;
   (*ht)->load_size++;
 
@@ -110,7 +120,7 @@ void put_ht(HashTable** ht, char* key, int value) {
   }
 }
 
-int get_ht(HashTable* ht, char* key) {
+int ht_get(HashTable* ht, const char* key) {
   int idx = hash(key, ht->size);
   Node* p = ht->buckets[idx];
   while (p) {
@@ -130,7 +140,7 @@ void del_node(Node* nd) {
 /*          ^p    ^q*/
 
 void del_ht(HashTable* ht) {
-  for (int i = 0; i < ht->size; i++) {
+  for (unsigned int i = 0; i < ht->size; i++) {
     Node* p = ht->buckets[i];
     if (!p) {continue;}
     while (p) {
@@ -142,3 +152,15 @@ void del_ht(HashTable* ht) {
   free(ht->buckets);
   free(ht);
 };
+
+int main() {
+  HashTable* ht = create_ht(4);
+  ht_put(&ht, "foo", 123);
+  ht_put(&ht, "bar", 45);
+  ht_put(&ht, "baz", 78);
+  printf("foo: %d\n"
+	 "ht->size: %d, ht->loaded_size: %d",
+	 ht_get(ht, "foo"), ht->size, ht->load_size);
+  del_ht(ht);
+  return 0;
+}

@@ -28,5 +28,5 @@
     } else if ((len) <= (cap) / 4) {				\
       arr = realloc((arr), sizeof(*arr) * ((cap) /= 2));	\
     }							        \
-    len -= 1;							\
+    (len)--;							\
   } while(0)
