@@ -1,9 +1,22 @@
-/* 哈希表的c库，需要搭配导入hashtable.h*/
+/*
+  哈希表的C库,
+  自行准备键值对, 一定是key, value, next这三个成员,
+  注意严格对应键值对类型, key一定是字符串, value自定义
+  注意桶是键值对的数组, 而键值对被设计为堆上的节点, 所以默认是_Node** bucket,
+
+  Example:
+  char* _key; int _value, output;
+  struct _Node {char* key; int value; struct _Node next;};
+  struct HashTable {size_t len, size_t cap, _Node** buckets} ht = {};
+  HT_PUT(ht->buckets, ht->len, ht->cap, _key, _value);
+  HT_GET(ht->buckets, ht->len, ht->cap, _key, output);
+  FREE_HT(ht->buckets, ht->cap);
+*/
 
 #include <string.h>
 #include <stdlib.h>
 
-static unsigned int hash(const char* key, unsigned int size) {
+static inline unsigned int hash(const char* key, unsigned int size) {
   unsigned int h = 5381;
   while (*key) {
     h = ((h << 5) + h) + *key;
@@ -14,7 +27,7 @@ static unsigned int hash(const char* key, unsigned int size) {
 
 /* NOTE: 传入的buckets, key, value类型必须对应 */
 /* NOTE: buckets节点的键值对名必须是key, value */
-#define macro_ht_put(buckets, len, cap, pt_key, pt_value)				\
+#define HT_PUT(buckets, len, cap, pt_key, pt_value)				\
   do {											\
     if (buckets == NULL) buckets = calloc((cap) = 4, sizeof(typeof(*(buckets))));	\
     /* 检查扩容 */									\
@@ -59,7 +72,7 @@ static unsigned int hash(const char* key, unsigned int size) {
     }											\
   } while(0)
 
-#define macro_ht_get(buckets, len, cap, fd_key, fd_value)	\
+#define HT_GET(buckets, len, cap, fd_key, fd_value)	\
   do {								\
     size_t idx = hash(fd_key, cap);				\
     typeof(*buckets) node = buckets[idx];			\
@@ -72,7 +85,7 @@ static unsigned int hash(const char* key, unsigned int size) {
     }								\
   } while(0)
 
-#define macro_free_ht(buckets, cap)			\
+#define FREE_HT(buckets, cap)			\
   do {							\
     for (size_t i = 0; i < cap; i++) {			\
       typeof(*buckets) next_node, node = buckets[i];	\
