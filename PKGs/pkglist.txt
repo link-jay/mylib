@@ -21,7 +21,6 @@ fcitx5-configtool 5.1.13-1
 fcitx5-rime 5.1.13-1
 ffmpegthumbnailer 2.3.0-1
 firefox 149.0.2-1
-fuse2 2.9.9-5
 gameconqueror 0.17-11
 gdb 17.1-3
 gdm 50.0-2
