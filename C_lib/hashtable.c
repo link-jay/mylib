@@ -13,6 +13,8 @@
   FREE_HT(ht->buckets, ht->cap);
 */
 
+/* NOTE: 要使用HT_ASK的话需要定义VALUE_NOT_FOUND */
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -29,10 +31,9 @@ static inline size_t hash(const char* key, unsigned int size) {
   do {												\
     if (buckets == NULL) buckets = calloc((cap) = 4, sizeof(typeof(*(buckets))));		\
     /* 检查扩容 */										\
-    /* NOTE: 这里只在运算前转换其中一个，运算再转换无法得到正确结果 */	\
     else if (((float)(len) / (cap)) > 0.7) {							\
       typeof(buckets) new_buckets = calloc((cap) *= 2, sizeof(typeof(*(buckets))));		\
-      (len) = 0;								\
+      (len) = 0;										\
       for (size_t n_idx, idx = 0; idx < (cap)/2; idx++) {					\
 	if ((buckets)[idx] == NULL) continue;							\
 	typeof(*(buckets)) node = (buckets)[idx];						\
@@ -72,18 +73,27 @@ static inline size_t hash(const char* key, unsigned int size) {
   } while(0)
 
 /* NOTE: HT_GET并不会处理找不到键的情况, 可以手动在查找前设置一个值并在查找完后检查是否变化来处理 */
-#define HT_GET(buckets, len, cap, fd_key, fd_value)		\
-  do {								\
-    size_t idx = hash(fd_key, cap);				\
-    typeof(*buckets) node = buckets[idx];			\
-    while (node != NULL) {					\
-      if (strcmp(fd_key, node->key) == 0) {			\
-	(fd_value) = node->value;				\
-	break;							\
-	  }							\
-      node = node->next;					\
-    }								\
+#define HT_GET(buckets, len, cap, fd_key, fd_value)	\
+  do {							\
+    size_t idx = hash(fd_key, cap);			\
+    typeof(*buckets) node = buckets[idx];		\
+    while (node != NULL) {				\
+      if (strcmp(fd_key, node->key) == 0) {		\
+	(fd_value) = node->value;			\
+	break;						\
+      }							\
+      node = node->next;				\
+    }							\
   } while(0)
+
+#define HT_ASK(buckets, len, cap, fd_key, fd_value)	\
+  do {							\
+    (fd_value) = VALUE_NOT_FOUND;			\
+    HT_GET(buckets, len, cap, fd_key, fd_value);	\
+    if ((fd_value) == VALUE_NOT_FOUND) {		\
+      HT_PUT(buckets, len, cap, fd_key, fd_value);	\
+    };							\
+   } while(0)
 
 /* NOTE: 复杂逻辑仍需要自行处理释放了逻辑 */
 #define FREE_HT(buckets, cap)				\
