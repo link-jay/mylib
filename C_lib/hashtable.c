@@ -1,8 +1,8 @@
 /*
-  哈希表的C库,
-  自行准备键值对, 一定是key, value, next这三个成员, key一定是字符串动态数组且置于最后
-  注意严格对应键值对类型, value自定义
-  注意桶是键值对的数组, 而键值对被设计为堆上的节点, 所以默认是_Node** bucket,
+  哈希表的C库，
+  自行准备键值对，一定是key，value，next这三个成员，key一定是字符串动态数组且置于最后
+  注意严格对应键值对类型，value自定义
+  注意桶是键值对的数组，而键值对被设计为堆上的节点，所以默认是_Node** bucket，
 
   Example:
   char* _key; int _value, output;
@@ -72,27 +72,28 @@ static inline size_t hash(const char* key, unsigned int size) {
     }												\
   } while(0)
 
-/* NOTE: HT_GET并不会处理找不到键的情况, 可以手动在查找前设置一个值并在查找完后检查是否变化来处理 */
-#define HT_GET(buckets, len, cap, fd_key, fd_value)	\
-  do {							\
-    size_t idx = hash(fd_key, cap);			\
-    typeof(*buckets) node = buckets[idx];		\
-    while (node != NULL) {				\
-      if (strcmp(fd_key, node->key) == 0) {		\
-	(fd_value) = node->value;			\
-	break;						\
-      }							\
-      node = node->next;				\
-    }							\
+/* NOTE: HT_GET并不会处理找不到键的情况，可以手动在查找前设置一个值并在查找完后检查是否变化来处理 */
+#define HT_GET(buckets, len, cap, fd_key, fd_value)		\
+  do {								\
+    size_t idx = hash(fd_key, cap);				\
+    typeof(*buckets) node = buckets[idx];			\
+    while (node != NULL) {					\
+      if (strcmp(fd_key, node->key) == 0) {			\
+	(fd_value) = node->value;				\
+	break;							\
+      }								\
+      node = node->next;					\
+    }								\
   } while(0)
 
-#define HT_ASK(buckets, len, cap, fd_key, fd_value)	\
-  do {							\
-    (fd_value) = VALUE_NOT_FOUND;			\
-    HT_GET(buckets, len, cap, fd_key, fd_value);	\
-    if ((fd_value) == VALUE_NOT_FOUND) {		\
-      HT_PUT(buckets, len, cap, fd_key, fd_value);	\
-    };							\
+/* NOTE: 当查找的键不存在，HT_ASK会创建这个键并使其值为flag */
+#define HT_ASK(buckets, len, cap, fd_key, fd_value, flag)	\
+  do {								\
+    (fd_value) = VALUE_NOT_FOUND;				\
+    HT_GET(buckets, len, cap, fd_key, fd_value);		\
+    if ((fd_value) == VALUE_NOT_FOUND) {			\
+      HT_PUT(buckets, len, cap, fd_key, flag);			\
+    };								\
    } while(0)
 
 /* NOTE: 复杂逻辑仍需要自行处理释放了逻辑 */
