@@ -2,6 +2,8 @@
 (setq custom-file "~/.emacs.d/autoinit.el")
 (load-file "~/.emacs.d/autoinit.el")
 
+(load-file "~/.emacs.d/extra.el")
+
 ;; 自动安装扩展
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -51,6 +53,10 @@
 
 ;; 追踪链接
 (setq find-file-visit-truename t)
+
+;; 缓冲区去除ANSI码
+;; (add-hook 'compilation-filter-hook
+;;           (lambda () (ansi-color-apply-on-region (point-min) (point-max))))
 
 ;; 全局快捷键
 (global-set-key (kbd "C-h") (kbd "DEL"))
