@@ -1,3 +1,3 @@
 # mylib
-只是我的一些配置文件和手写库
+Just my lib and dotfiles.
 
