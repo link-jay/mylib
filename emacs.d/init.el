@@ -79,7 +79,7 @@
 (global-set-key (kbd "M-p") (lambda () (interactive) (next-line) (transpose-lines -1) (backward-char)))
 
 ;; 模式快捷键
-(dolist (hook '(c-mode-hook lua-mode-hook mhtml-mode-hook))
+(dolist (hook '(c-mode-hook c++-mode-hook lua-mode-hook mhtml-mode-hook))
   (add-hook hook
 	    (lambda ()
 	      (local-set-key (kbd "C-o") (kbd "C-a RET C-p TAB"))
