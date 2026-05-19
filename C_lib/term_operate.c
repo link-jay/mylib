@@ -1,4 +1,4 @@
-/* 接管控制终端输入，term_init处理，term_restore恢复，term_getkey来捕获输入 */
+/* 接管控制终端输入，term_restore恢复，term_getkey来捕获输入 */
 #include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
@@ -8,7 +8,7 @@
 static struct termios old_term;
 static int old_flags;
 
-void term_init(void)
+void term_key_operate(void)
 {
   tcgetattr(STDIN_FILENO, &old_term);
   struct termios new_term = old_term;
@@ -21,12 +21,6 @@ void term_init(void)
   fcntl(STDIN_FILENO, F_SETFL, old_flags | O_NONBLOCK);
 }
 
-void term_restore(void)
-{
-  tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
-  fcntl(STDIN_FILENO, F_SETFL, old_flags);
-}
-
 int term_getkey(void)
 {
   unsigned char c;
@@ -34,4 +28,18 @@ int term_getkey(void)
     return c;
   }
   return -1;
+}
+
+void term_close_echo(void)
+{
+  tcgetattr(STDIN_FILENO, &old_term);
+  struct termios new_term = old_term;
+  new_term.c_lflag &= ~ECHO;
+  tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
+}
+
+void term_restore(void)
+{
+  tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
+  fcntl(STDIN_FILENO, F_SETFL, old_flags);
 }
