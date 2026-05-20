@@ -58,6 +58,9 @@
 ;; (add-hook 'compilation-filter-hook
 ;;           (lambda () (ansi-color-apply-on-region (point-min) (point-max))))
 
+;; 自动刷新imenu
+(setq imenu-auto-rescan t)
+
 ;; 全局快捷键
 (global-set-key (kbd "C-h") (kbd "DEL"))
 (global-set-key (kbd "C-S-h") 'help)
@@ -79,11 +82,11 @@
 (global-set-key (kbd "M-p") (lambda () (interactive) (next-line) (transpose-lines -1) (backward-char)))
 
 ;; 模式快捷键
-(dolist (hook '(c-mode-hook c++-mode-hook lua-mode-hook mhtml-mode-hook))
+(dolist (hook '(c-mode-hook c++-mode-hook lua-mode-hook mhtml-mode-hook graphviz-dot-mode-hook))
   (add-hook hook
 	    (lambda ()
-	      (local-set-key (kbd "C-o") (kbd "C-a RET C-p TAB"))
-	      (local-set-key (kbd "M-o") (kbd "C-e RET TAB")))))
+	      (local-set-key (kbd "C-o") (kbd "C-p C-e RET"))
+	      (local-set-key (kbd "M-o") (kbd "C-e RET")))))
 
 (add-hook 'mhtml-mode-hook
 	  (lambda ()
