@@ -82,10 +82,17 @@
 (global-set-key (kbd "M-p") (lambda () (interactive) (next-line) (transpose-lines -1) (backward-char)))
 
 ;; 模式快捷键
+(defun oline ()
+ (interactive)
+ (indent-for-tab-command)
+ (move-beginning-of-line 1)
+ (open-line 1)
+ (indent-for-tab-command))
+
 (dolist (hook '(c-mode-hook c++-mode-hook lua-mode-hook mhtml-mode-hook graphviz-dot-mode-hook))
   (add-hook hook
 	    (lambda ()
-	      (local-set-key (kbd "C-o") (kbd "C-p C-e RET"))
+	      (local-set-key (kbd "C-o") 'oline)
 	      (local-set-key (kbd "M-o") (kbd "C-e RET")))))
 
 (add-hook 'mhtml-mode-hook
