@@ -58,9 +58,6 @@
 ;; (add-hook 'compilation-filter-hook
 ;;           (lambda () (ansi-color-apply-on-region (point-min) (point-max))))
 
-;; 自动刷新imenu
-(setq imenu-auto-rescan t)
-
 ;; 全局快捷键
 (global-set-key (kbd "C-h") (kbd "DEL"))
 (global-set-key (kbd "C-S-h") 'help)
@@ -89,7 +86,8 @@
  (open-line 1)
  (indent-for-tab-command))
 
-(dolist (hook '(c-mode-hook c++-mode-hook lua-mode-hook mhtml-mode-hook graphviz-dot-mode-hook))
+(dolist (hook '(c-mode-hook c++-mode-hook lua-mode-hook mhtml-mode-hook
+			    graphviz-dot-mode-hook zig-mode-hook))
   (add-hook hook
 	    (lambda ()
 	      (local-set-key (kbd "C-o") 'oline)
