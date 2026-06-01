@@ -58,6 +58,21 @@
 ;; (add-hook 'compilation-filter-hook
 ;;           (lambda () (ansi-color-apply-on-region (point-min) (point-max))))
 
+;; Custom Function
+(defun oline ()
+ (interactive)
+ (indent-for-tab-command)
+ (move-beginning-of-line 1)
+ (open-line 1)
+ (indent-for-tab-command))
+
+(defun repeat-current-line ()
+  (interactive)
+  (let ((beg (line-beginning-position))
+	(end (line-end-position)))
+	(kill-ring-save beg end))
+  (move-end-of-line 1) (newline) (yank))
+
 ;; 全局快捷键
 (global-set-key (kbd "C-h") (kbd "DEL"))
 (global-set-key (kbd "C-S-h") 'help)
@@ -66,6 +81,7 @@
 (global-set-key (kbd "C-w") (kbd "M-DEL"))
 (global-set-key (kbd "C-c x") 'kill-region)
 (global-set-key (kbd "C-c c") 'kill-ring-save)
+(global-set-key (kbd "C-c v") 'repeat-current-line)
 (global-set-key (kbd "<f5>") (kbd "M-x compile"))
 (global-set-key (kbd "<f12>") (kbd "M-x gdb"))
 (global-set-key (kbd "C-<f12>") (kbd "M-x gdb-many-windows"))
@@ -79,13 +95,6 @@
 (global-set-key (kbd "M-p") (lambda () (interactive) (next-line) (transpose-lines -1) (backward-char)))
 
 ;; 模式快捷键
-(defun oline ()
- (interactive)
- (indent-for-tab-command)
- (move-beginning-of-line 1)
- (open-line 1)
- (indent-for-tab-command))
-
 (dolist (hook '(c-mode-hook c++-mode-hook lua-mode-hook mhtml-mode-hook
 			    graphviz-dot-mode-hook zig-mode-hook))
   (add-hook hook
