@@ -6,12 +6,15 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(gruber-darker))
  '(custom-safe-themes
-   '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd"
+   '("4e98c71f75846b4a87bdaa335638b0fadf32c5ddf861a08f884685a45cb9a06d"
+     "69ffc0b6b7d50dff90b432e84fb26bd15fef8ff532a3a6a7917ae964fa822dd5"
+     "e13beeb34b932f309fb2c360a04a460821ca99fe58f69e65557d6c1b10ba18c7"
+     "01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd"
      default))
  '(display-line-numbers-type 'visual)
  '(package-selected-packages
-   '(gruber-darker-theme lua-mode magit markdown-mode multiple-cursors
-		       yasnippet graphviz-dot-mode zig-mode))
+   '(gruber-darker-theme magit multiple-cursors yasnippet lua-mode
+		        markdown-mode zig-mode graphviz-dot-mode))
  '(warning-suppress-log-types '((use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

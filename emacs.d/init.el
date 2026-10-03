@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; 自动配置文件
 (setq custom-file "~/.emacs.d/autoinit.el")
 (load-file "~/.emacs.d/autoinit.el")
@@ -36,9 +38,10 @@
 ;; 设置行号
 (global-display-line-numbers-mode 1)
 
-;; 设置字号字体
-(add-to-list 'default-frame-alist '(font . "FiraCode-21"))
-
+;; 设置字体
+(set-face-attribute 'default nil
+                    :family "Fira Code"
+                    :height 210)
 ;; 改光标
 (setq-default cursor-type 'bar)
 
@@ -82,6 +85,7 @@
 (global-set-key (kbd "C-c x") 'kill-region)
 (global-set-key (kbd "C-c c") 'kill-ring-save)
 (global-set-key (kbd "C-c v") 'repeat-current-line)
+(global-set-key (kbd "<f2>") 'compile)
 (global-set-key (kbd "<f5>") (kbd "M-x compile"))
 (global-set-key (kbd "<f12>") (kbd "M-x gdb"))
 (global-set-key (kbd "C-<f12>") (kbd "M-x gdb-many-windows"))

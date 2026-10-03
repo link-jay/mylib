@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; 缓冲区ANSI转义序列支持
 (with-eval-after-load 'gruber-darker-theme
   (custom-set-faces
