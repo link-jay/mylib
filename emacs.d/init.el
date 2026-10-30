@@ -3,7 +3,6 @@
 ;; 自动配置文件
 (setq custom-file "~/.emacs.d/autoinit.el")
 (load-file "~/.emacs.d/autoinit.el")
-
 (load-file "~/.emacs.d/extra.el")
 
 ;; 自动安装扩展
@@ -61,22 +60,36 @@
 ;; (add-hook 'compilation-filter-hook
 ;;           (lambda () (ansi-color-apply-on-region (point-min) (point-max))))
 
-;; Custom Function
-(defun oline ()
- (interactive)
- (indent-for-tab-command)
- (move-beginning-of-line 1)
- (open-line 1)
- (indent-for-tab-command))
+;; 全局快捷键
+(defun my/run-compile () (interactive)
+       (recompile)
+       (select-window (get-buffer-window"*compilation*")))
 
-(defun repeat-current-line ()
-  (interactive)
+(defun my/close-window () (interactive)
+       (kill-buffer (current-buffer)))
+
+(defun my/open-newline() (interactive)
+       (move-beginning-of-line 1) (open-line 1))
+
+(defun my/transpose-to-next-line () (interactive)
+       (next-line) (transpose-lines 1) (backward-char))
+
+(defun my/transpose-to-prev-line () (interactive)
+       (next-line) (transpose-lines -1) (backward-char))
+
+(defun my/repeat-current-line () (interactive)
   (let ((beg (line-beginning-position))
 	(end (line-end-position)))
 	(kill-ring-save beg end))
   (move-end-of-line 1) (newline) (yank))
 
-;; 全局快捷键
+(defun my/tmp-run-command (cmd)
+  (interactive "scommand: ")
+  (let ((ori-cmd compile-command))
+    (compile cmd)
+    (setq compile-command ori-cmd))
+  (select-window (get-buffer-window"*compilation*")))
+
 (global-set-key (kbd "C-h") (kbd "DEL"))
 (global-set-key (kbd "C-S-h") 'help)
 (global-set-key (kbd "C-z") 'universal-argument)
@@ -84,38 +97,43 @@
 (global-set-key (kbd "C-w") (kbd "M-DEL"))
 (global-set-key (kbd "C-c x") 'kill-region)
 (global-set-key (kbd "C-c c") 'kill-ring-save)
-(global-set-key (kbd "C-c v") 'repeat-current-line)
+(global-set-key (kbd "C-c v") 'my/repeat-current-line)
 (global-set-key (kbd "<f2>") 'compile)
-(global-set-key (kbd "<f5>") (kbd "M-x compile"))
-(global-set-key (kbd "<f12>") (kbd "M-x gdb"))
-(global-set-key (kbd "C-<f12>") (kbd "M-x gdb-many-windows"))
+(global-set-key (kbd "<f5>") 'my/run-compile)
+(global-set-key (kbd "S-<f2>") 'my/tmp-run-command)
+(global-set-key (kbd "<f12>") 'gdb)
+(global-set-key (kbd "C-<f12>") 'gdb-many-windows)
 (global-set-key (kbd "M-g i") (kbd "M-x imenu RET"))
 (global-set-key (kbd "C-x b") 'mode-line-other-buffer)
 (global-set-key (kbd "C-x C-b") 'buffer-menu-other-window)
-(global-set-key (kbd "C-x k") (lambda () (interactive) (kill-buffer (current-buffer))))
-(global-set-key (kbd "C-o") (lambda () (interactive) (move-beginning-of-line 1) (open-line 1)))
-(global-set-key (kbd "M-o")  (lambda () (interactive) (move-end-of-line 1) (newline 1)))
-(global-set-key (kbd "M-n") (lambda () (interactive) (next-line) (transpose-lines 1) (backward-char)))
-(global-set-key (kbd "M-p") (lambda () (interactive) (next-line) (transpose-lines -1) (backward-char)))
+(global-set-key (kbd "C-x k") 'my/close-window)
+(global-set-key (kbd "C-o") 'my/open-newline)
+(global-set-key (kbd "M-n") 'my/transpose-to-next-line)
+(global-set-key (kbd "M-p") 'my/transpose-to-prev-line)
 
 ;; 模式快捷键
-(dolist (hook '(c-mode-hook c++-mode-hook lua-mode-hook mhtml-mode-hook
-			    graphviz-dot-mode-hook zig-mode-hook))
-  (add-hook hook
-	    (lambda ()
-	      (local-set-key (kbd "C-o") 'oline)
-	      (local-set-key (kbd "M-o") (kbd "C-e RET")))))
+(defun my/mode-open-newline () (interactive)
+ (indent-for-tab-command)
+ (open-newline)
+ (indent-for-tab-command))
 
-(add-hook 'mhtml-mode-hook
-	  (lambda ()
-	    (local-set-key (kbd "M-i") 'facemenu-keymap)))
+;; ===================================
+
+(dolist (mode-hook '(c-mode-hook
+		c++-mode-hook
+		lua-mode-hook
+		mhtml-mode-hook
+		graphviz-dot-mode-hook
+		zig-mode-hook))
+  (add-hook mode-hook
+	    (lambda () (local-set-key (kbd "C-o") 'my/mode-open-newline))))
+
+(add-hook 'mhtml-mode-hook (lambda () (local-set-key (kbd "M-i") 'facemenu-keymap)))
 
 (add-hook 'markdown-mode-hook
 	  (lambda ()
-	    (local-set-key (kbd "M-n")
-			   (lambda () (interactive) (next-line) (transpose-lines 1) (backward-char)))
-	    (local-set-key (kbd "M-p")
-			   (lambda () (interactive) (next-line) (transpose-lines -1) (backward-char)))))
+	    (local-set-key (kbd "M-n") 'my/transpose-to-next-line)
+	    (local-set-key (kbd "M-p") 'my/transpose-to-prev-line)))
 
 ;; multiple-cursors
 (global-set-key (kbd "C->") 'mc/mark-next-like-this-word)
