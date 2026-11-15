@@ -63,10 +63,13 @@
 ;; 全局快捷键
 (defun my/run-compile () (interactive)
        (recompile)
-       (select-window (get-buffer-window"*compilation*")))
+       (select-window (get-buffer-window "*compilation*")))
 
-(defun my/close-window () (interactive)
-       (kill-buffer (current-buffer)))
+(defun my/shut-window () (interactive)
+       (kill-buffer)
+       (if (> (count-windows) 1)
+	   (delete-window)
+	 nil))
 
 (defun my/open-newline() (interactive)
        (move-beginning-of-line 1) (open-line 1))
@@ -85,9 +88,9 @@
 
 (defun my/tmp-run-command (cmd)
   (interactive "scommand: ")
-  (let ((ori-cmd compile-command))
+  (let ((original-command compile-command))
     (compile cmd)
-    (setq compile-command ori-cmd))
+    (setq compile-command original-command))
   (select-window (get-buffer-window"*compilation*")))
 
 (global-set-key (kbd "C-h") (kbd "DEL"))
@@ -106,7 +109,7 @@
 (global-set-key (kbd "M-g i") (kbd "M-x imenu RET"))
 (global-set-key (kbd "C-x b") 'mode-line-other-buffer)
 (global-set-key (kbd "C-x C-b") 'buffer-menu-other-window)
-(global-set-key (kbd "C-x k") 'my/close-window)
+(global-set-key (kbd "C-x k") 'my/shut-window)
 (global-set-key (kbd "C-o") 'my/open-newline)
 (global-set-key (kbd "M-n") 'my/transpose-to-next-line)
 (global-set-key (kbd "M-p") 'my/transpose-to-prev-line)
@@ -114,7 +117,7 @@
 ;; 模式快捷键
 (defun my/mode-open-newline () (interactive)
  (indent-for-tab-command)
- (open-newline)
+ (my/open-newline)
  (indent-for-tab-command))
 
 ;; ===================================
