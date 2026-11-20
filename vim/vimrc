@@ -1,0 +1,22 @@
+set viminfo=
+
+set incsearch
+set ignorecase
+set smartcase
+
+" 改变普通模式与插入模式的光标形态
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+
+" 设置行号
+set number
+set relativenumber
+
+" 智能缩进
+filetype plugin indent on
+set autoindent
+set smartindent
+set cindent
+syntax on
+
+autocmd FileType c,cpp setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
