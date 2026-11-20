@@ -13,8 +13,15 @@
      default))
  '(display-line-numbers-type 'visual)
  '(package-selected-packages
-   '(gruber-darker-theme magit multiple-cursors yasnippet lua-mode
-		        markdown-mode zig-mode graphviz-dot-mode))
+   '(
+     gruber-darker-theme
+     magit
+     multiple-cursors
+     yasnippet
+     lua-mode
+     zig-mode
+     markdown-mode
+     ))
  '(warning-suppress-log-types '((use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

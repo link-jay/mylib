@@ -1,9 +1,11 @@
 ;; -*- lexical-binding: t; -*-
 
 ;; 自动配置文件
-(setq custom-file "~/.emacs.d/autoinit.el")
-(load-file "~/.emacs.d/autoinit.el")
-(load-file "~/.emacs.d/extra.el")
+(setq custom-file "~/.emacs.d/custom.el")
+(load-file "~/.emacs.d/custom.el")
+(load-file "~/.emacs.d/compilation.el")
+(add-to-list 'load-path "~/.emacs.d/plugin")
+(load-file "~/.emacs.d/plugin.el")
 
 ;; 自动安装扩展
 (require 'package)
@@ -14,7 +16,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-;; 自动安装 autoinit.el 里记录的包
+;; 自动安装 custom.el 里记录的包
 (package-install-selected-packages t)
 
 ;; 关闭保存的一些设置
